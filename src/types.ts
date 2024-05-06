@@ -1,7 +1,7 @@
-import { TW } from "twind";
-import { Signal } from "@preact/signals-react";
-import { HomeAssistant } from "custom-card-helpers";
-import Babel from "babel__standalone";
+import { TW } from 'twind';
+import { Signal } from '@preact/signals-react';
+import { HomeAssistant } from 'custom-card-helpers';
+import Babel from 'babel__standalone';
 
 declare global {
   interface Window {
@@ -11,17 +11,17 @@ declare global {
 }
 
 export type CardConfig = {
-	type: 'custom:react-card';
-	content: string;
+  type: 'custom:react-card';
+  content: string;
 };
 
 export type CardSignals = {
-	hass: Signal<HomeAssistant>;
-	config: Signal<CardConfig>;
-}
+  hass: Signal<HomeAssistant>;
+  config: Signal<CardConfig>;
+};
 
 export type CardProps = {
-	tw: TW;
-	dispatchEvent: (event: Event) => void;
-	signals: CardSignals;
+  tw: TW;
+  dispatchEvent: (event: Event) => void;
+  signals: CardSignals;
 };

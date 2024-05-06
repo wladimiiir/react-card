@@ -1,9 +1,8 @@
-import React from "react";
-
-import { registerCardComponent, registerEditorComponent } from "./webComponent.tsx";
-import Editor from "./components/editor/Editor";
-import Card from "./components/card/Card.tsx";
-import { CARD_NAME, EDITOR_NAME, VERSION } from "./constants.ts";
+import React from 'react';
+import Editor from './components/editor/Editor';
+import Card from './components/card/Card.tsx';
+import { registerCardComponent, registerEditorComponent } from './webComponent.tsx';
+import { CARD_NAME, EDITOR_NAME, VERSION } from './constants.ts';
 
 const registerCards = () => {
   registerCardComponent(CARD_NAME, EDITOR_NAME, Card);
@@ -11,8 +10,8 @@ const registerCards = () => {
 
   console.info(
     `%c    REACT-CARD    \n%c  Version ${VERSION}   `,
-    "color: orange; font-weight: bold; background: black",
-    "color: white; font-weight: bold; background: dimgray"
+    'color: orange; font-weight: bold; background: black',
+    'color: white; font-weight: bold; background: dimgray',
   );
 };
 
@@ -20,11 +19,11 @@ const init = () => {
   window.React = React;
 
   if (!window.Babel) {
-    const script = document.createElement("script");
-    script.src = "/hacsfiles/react-card/babel.min.js";
+    const script = document.createElement('script');
+    script.src = '/hacsfiles/react-card/babel.min.js';
     script.onload = registerCards;
     script.onerror = () => {
-      console.error("Failed to load Babel script.");
+      console.error('Failed to load Babel script.');
     };
     document.head.appendChild(script);
   } else {
