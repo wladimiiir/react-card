@@ -6,6 +6,7 @@ import beautify from 'ace-builds/src-noconflict/ext-beautify';
 import { useComputed } from '@preact/signals-react';
 import { useSignals } from '@preact/signals-react/runtime';
 import { useEffect, useRef } from 'react';
+import { tailwindClasses } from './tailwind.ts';
 import { CardProps } from '@/types.ts';
 
 declare global {
@@ -34,6 +35,15 @@ const Editor = ({ tw, signals, dispatchEvent }: CardProps) => {
           callback(
             null,
             entities.map((entity) => ({ name: entity, value: entity, score: 1 })),
+          );
+        },
+      },
+      {
+        // @ts-ignore
+        getCompletions: (editor, session, pos, prefix, callback) => {
+          callback(
+            null,
+            tailwindClasses.map((twClass) => ({ name: twClass, value: twClass, score: 1 })),
           );
         },
       },
