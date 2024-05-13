@@ -59,6 +59,12 @@ const createCardElement = (ReactComponent: ElementType, editorCardName?: string)
       return editorCardName ? document.createElement(editorCardName) : null;
     }
 
+    static getStubConfig() {
+      return {
+        content: "return (\n  <div className='px-3 py-4'>\n  </div>\n)",
+      };
+    }
+
     set hass(hass: HomeAssistant) {
       this.signals.hass.value = hass;
     }
