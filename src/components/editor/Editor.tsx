@@ -41,6 +41,17 @@ const Editor = ({ tw, signals, dispatchEvent }: CardProps) => {
       {
         // @ts-ignore
         getCompletions: (editor, session, pos, prefix, callback) => {
+          const token = session.getTokenAt(pos.row, pos.column);
+          if (!token.type.startsWith('string')) {
+            return callback(null, []);
+          }
+
+          const tokens = session.getTokens(pos.row);
+          const tokenIndex = tokens.findIndex((t: any) => t === token);
+          if (!tokens.slice(0, tokenIndex).some((t: any) => t.value === 'class' || t.value === 'className')) {
+            return callback(null, []);
+          }
+
           callback(
             null,
             tailwindClasses.map((twClass) => ({ name: twClass, value: twClass, score: 1 })),
