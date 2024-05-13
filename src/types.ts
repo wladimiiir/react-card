@@ -13,6 +13,7 @@ declare global {
 export type CardConfig = {
   type: 'custom:react-card';
   content: string;
+  componentName: string;
 };
 
 export type CardSignals = {
@@ -24,4 +25,6 @@ export type CardProps = {
   tw: TW;
   dispatchEvent: (event: Event) => void;
   signals: CardSignals;
+  editMode: boolean;
+  previewMode: boolean;
 };

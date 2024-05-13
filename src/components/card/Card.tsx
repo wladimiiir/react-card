@@ -1,7 +1,9 @@
 import React, { DetailedHTMLProps } from 'react';
 import { useSignals } from '@preact/signals-react/runtime';
-import { CardProps } from '../../types.ts';
 import { ContentRenderer } from './ContentRenderer.tsx';
+import { ComponentRegistrar } from './ComponentRegistrar';
+import { EditModeInfo } from './EditModeInfo.tsx';
+import { CardProps } from '@/types.ts';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -12,18 +14,22 @@ declare global {
   }
 }
 
-const Card = ({ tw, signals, dispatchEvent }: CardProps) => {
+const Card = ({ tw, signals, dispatchEvent, previewMode, editMode }: CardProps) => {
   useSignals();
 
+  const { content, componentName } = signals.config.value;
+  const shouldRender = !componentName || previewMode || editMode;
+
   return (
-    <ha-card>
-      <ContentRenderer
-        tw={tw}
-        content={signals.config.value.content}
-        hass={signals.hass}
-        dispatchEvent={dispatchEvent}
-      />
-    </ha-card>
+    <>
+      {componentName && <ComponentRegistrar content={content} componentName={componentName} />}
+      {shouldRender && (
+        <ha-card>
+          <ContentRenderer tw={tw} content={content} hass={signals.hass} dispatchEvent={dispatchEvent} />
+          {componentName && editMode && <EditModeInfo tw={tw} componentName={componentName} />}
+        </ha-card>
+      )}
+    </>
   );
 };
 

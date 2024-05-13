@@ -5,6 +5,11 @@ import { defineConfig } from 'vite';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
   build: {
     sourcemap: 'inline',
     minify: false,
@@ -17,7 +22,7 @@ export default defineConfig({
       },
     },
     watch: {
-      include: 'src/**/*.tsx',
+      include: 'src/**/*.ts(x)?',
     },
   },
   server: {

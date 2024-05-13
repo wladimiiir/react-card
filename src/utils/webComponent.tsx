@@ -2,8 +2,8 @@ import React, { ElementType } from 'react';
 import { signal } from '@preact/signals-react';
 import ReactDOM from 'react-dom/client';
 import { create, cssomSheet, TW } from 'twind';
-import { CardConfig, CardSignals } from './types.ts';
 import { computeCardSize, HomeAssistant } from 'custom-card-helpers';
+import { CardConfig, CardSignals } from '@/types.ts';
 
 export const registerCardComponent = (name: string, editorName: string, component: ElementType) => {
   const cardElement = createCardElement(component, editorName);
@@ -13,7 +13,7 @@ export const registerCardComponent = (name: string, editorName: string, componen
   window.customCards.push({
     type: name,
     name: 'React Card',
-    description: 'A card that renders a React components with Tailwind CSS support.',
+    description: 'Powerful card that can render React components.',
   });
 };
 
@@ -27,6 +27,7 @@ const createCardElement = (ReactComponent: ElementType, editorCardName?: string)
     tw: TW;
     root: ReactDOM.Root;
     signals: CardSignals;
+    editMode: boolean;
 
     constructor() {
       super();
@@ -70,14 +71,23 @@ const createCardElement = (ReactComponent: ElementType, editorCardName?: string)
       this.signals.config.value = config;
     }
 
-    getCardSize(): number {
-      return computeCardSize(this) as number;
+    getCardSize(): number | Promise<number> {
+      return computeCardSize(this);
     }
 
     render() {
+      const parentElement = this.shadowRoot.host.parentElement;
+      const previewMode = parentElement?.tagName?.toLowerCase() === 'hui-card-preview';
+
       this.root.render(
         <React.StrictMode>
-          <ReactComponent tw={this.tw} dispatchEvent={this.dispatchEvent.bind(this)} signals={this.signals} />
+          <ReactComponent
+            tw={this.tw}
+            dispatchEvent={this.dispatchEvent.bind(this)}
+            signals={this.signals}
+            editMode={this.editMode}
+            previewMode={previewMode}
+          />
         </React.StrictMode>,
       );
     }

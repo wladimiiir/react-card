@@ -1,8 +1,8 @@
 import React from 'react';
-import Editor from './components/editor/Editor';
-import Card from './components/card/Card.tsx';
-import { registerCardComponent, registerEditorComponent } from './webComponent.tsx';
-import { CARD_NAME, EDITOR_NAME, VERSION } from './constants.ts';
+import Editor from '@/components/editor/Editor';
+import Card from '@/components/card/Card.tsx';
+import { registerCardComponent, registerEditorComponent } from '@/utils/webComponent.tsx';
+import { CARD_NAME, EDITOR_NAME, VERSION } from '@/constants.ts';
 
 const registerCards = () => {
   registerCardComponent(CARD_NAME, EDITOR_NAME, Card);
@@ -16,7 +16,9 @@ const registerCards = () => {
 };
 
 const init = () => {
-  window.React = React;
+  if (!window.React) {
+    window.React = React;
+  }
 
   if (!window.Babel) {
     const script = document.createElement('script');

@@ -8,6 +8,6 @@ type Props = {
 export const ContentError = ({ tw, error }: Props) => (
   <div className={tw('p-4 bg-red-100 text-red-500')}>
     <p>Failed to render content due to the following error:</p>
-    <p className={tw('font-bold text-sm')}>{error.message}</p>
+    <p className={tw('font-bold text-sm mt-4')}>{error.message}</p>
   </div>
 );
