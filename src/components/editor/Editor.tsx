@@ -1,11 +1,11 @@
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/theme-monokai';
-import 'ace-builds/src-noconflict/ext-language_tools';
+import langTools from 'ace-builds/src-noconflict/ext-language_tools';
 import beautify from 'ace-builds/src-noconflict/ext-beautify';
 import { useComputed } from '@preact/signals-react';
 import { useSignals } from '@preact/signals-react/runtime';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { CardProps } from '@/types.ts';
 
 declare global {
@@ -23,6 +23,22 @@ const Editor = ({ tw, signals, dispatchEvent }: CardProps) => {
   const editorRef = useRef(null);
   const content = useComputed(() => signals.config.value.content);
   const componentName = useComputed(() => signals.config.value.componentName);
+
+  useEffect(() => {
+    const entities = Object.keys(signals.hass.value.states);
+    langTools.setCompleters([
+      langTools.textCompleter,
+      {
+        // @ts-ignore
+        getCompletions: (editor, session, pos, prefix, callback) => {
+          callback(
+            null,
+            entities.map((entity) => ({ name: entity, value: entity, score: 1 })),
+          );
+        },
+      },
+    ]);
+  }, []);
 
   const onContentChange = (newCode: string) => {
     const event = new CustomEvent('config-changed', {
@@ -80,6 +96,7 @@ const Editor = ({ tw, signals, dispatchEvent }: CardProps) => {
         highlightActiveLine={true}
         setOptions={{
           useWorker: false,
+          enableLiveAutocompletion: true,
           enableBasicAutocompletion: true,
           showLineNumbers: true,
           tabSize: 2,
