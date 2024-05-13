@@ -87,9 +87,20 @@ const injectTWToClassProperties = (content: string) => {
   return content;
 };
 
+const addPropsToReusableComponents = (content: string) => {
+  const components = getComponents().value;
+
+  for (const componentName in components) {
+    content = content.replace(new RegExp(`<${componentName}([^>]*)`, 'g'), `<${componentName} {...props}$1`);
+  }
+
+  return content;
+};
+
 export const createDynamicComponent = (content: string) => {
   content = addReturnIfNotPresent(content);
   content = injectTWToClassProperties(content);
+  content = addPropsToReusableComponents(content);
 
   const result = window.Babel.transform(
     COMPONENT_TEMPLATE.replace('@content@', content).replace(

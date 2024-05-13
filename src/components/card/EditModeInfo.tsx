@@ -17,7 +17,7 @@ export const EditModeInfo = ({ tw, componentName }: Props) => {
           This component can be used in another React Card component:
         </div>
         <div className={tw('mt-2 text-xs text-gray-200')}>
-          <code className={tw('font-bold')}>{`<${componentName} {...props}/>`}</code>
+          <code className={tw('font-bold')}>{`<${componentName} />`}</code>
         </div>
         <div className={tw('mt-2 text-xs text-gray-200')}>
           This card will be hidden and <strong>will not</strong> be rendered in non-edit mode.
